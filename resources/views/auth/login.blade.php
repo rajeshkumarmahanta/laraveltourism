@@ -1,115 +1,195 @@
 <!DOCTYPE html>
-<html lang="en"> 
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<html lang="en">
+
 <head>
-    <title>Portal - Bootstrap 5 Admin Dashboard Template For Developers</title>
-    
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
-    <meta name="author" content="Xiaoying Riley at 3rd Wave Media">    
-    <link rel="shortcut icon" href="favicon.ico"> 
-    
-    <!-- FontAwesome JS-->
-    <script defer src="{{ asset('admin/assets/plugins/fontawesome/js/all.min.js') }}"></script>
-    
-    <!-- App CSS -->  
-    <link id="theme-style" rel="stylesheet" href="{{ asset('admin/assets/css/portal.css') }}">
+	<title>Admin Login</title>
 
-</head> 
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="">
+	<meta name="description" content="Booking - Multipurpose Online Booking Theme">
 
-<body class="app app-login p-0">    	
-    <div class="row g-0 app-auth-wrapper">
-	    <div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
-		    <div class="d-flex flex-column align-content-end">
-			    <div class="app-auth-body mx-auto">	
-				    <div class="app-auth-branding mb-4"><a class="app-logo" href="index-2.html"><img class="logo-icon me-2" src="assets/images/app-logo.svg" alt="logo"></a></div>
-					<h2 class="auth-heading text-center mb-5">Log in to Portal</h2>
-			        <div class="auth-form-container text-start">
-                    <form method="POST" action="{{ route('login') }}" class="auth-form login-form">
-                        @csrf
-                        <div class="email mb-3">
-                            <label for="email" class="sr-only">{{ __('Email Address') }}</label>
-                                <input id="email" type="email" class="form-control signin-email @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter email" required autocomplete="email" autofocus>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                        </div>
+	<!-- Dark mode -->
+	<script>
+		const storedTheme = localStorage.getItem('theme')
+ 
+		const getPreferredTheme = () => {
+			if (storedTheme) {
+				return storedTheme
+			}
+			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+		}
 
-                        <div class="password mb-3">
-                            <label for="password" class="sr-only">{{ __('Password') }}</label>
-                                <input id="password" type="password" class="form-control signin-password @error('password') is-invalid @enderror" name="password" placeholder="Enter password" required autocomplete="current-password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                <div class="extra mt-3 row justify-content-between">
-									<div class="col-6">
-										<div class="form-check">
-											
-                                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+		const setTheme = function (theme) {
+			if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				document.documentElement.setAttribute('data-bs-theme', 'dark')
+			} else {
+				document.documentElement.setAttribute('data-bs-theme', theme)
+			}
+		}
 
-                                            <label class="form-check-label" for="remember">
-                                                {{ __('Remember Me') }}
-                                            </label>
-										</div>
-									</div><!--//col-6-->
-									<div class="col-6">
-										<div class="forgot-password text-end">
-											  @if (Route::has('password.request'))
-                                                    <a href="{{ route('password.request') }}">
-                                                        {{ __('Forgot Your Password?') }}
-                                                    </a>
-                                                @endif
-										</div>
-									</div><!--//col-6-->
-								</div>
-                             </div>
-                            <div class="text-center">
-                             <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">
-                                    {{ __('Login') }}
-                                </button>
+		setTheme(getPreferredTheme())
+
+		window.addEventListener('DOMContentLoaded', () => {
+		    var el = document.querySelector('.theme-icon-active');
+			if(el != 'undefined' && el != null) {
+				const showActiveTheme = theme => {
+				const activeThemeIcon = document.querySelector('.theme-icon-active use')
+				const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+				const svgOfActiveBtn = btnToActive.querySelector('.mode-switch use').getAttribute('href')
+
+				document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
+					element.classList.remove('active')
+				})
+
+				btnToActive.classList.add('active')
+				activeThemeIcon.setAttribute('href', svgOfActiveBtn)
+			}
+
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+				if (storedTheme !== 'light' || storedTheme !== 'dark') {
+					setTheme(getPreferredTheme())
+				}
+			})
+
+			showActiveTheme(getPreferredTheme())
+
+			document.querySelectorAll('[data-bs-theme-value]')
+				.forEach(toggle => {
+					toggle.addEventListener('click', () => {
+						const theme = toggle.getAttribute('data-bs-theme-value')
+						localStorage.setItem('theme', theme)
+						setTheme(theme)
+						showActiveTheme(theme)
+					})
+				})
+
+			}
+		})
+		
+	</script>
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com/">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Poppins:wght@400;500;700&amp;display=swap">
+
+	<!-- Plugins CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/font-awesome/css/all.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}">
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+
+</head>
+
+<body>
+
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+	
+<!-- =======================
+Main Content START -->
+<section class="vh-xxl-100">
+	<div class="container h-100 d-flex px-0 px-sm-4">
+		<div class="row justify-content-center align-items-center m-auto">
+			<div class="col-12">
+				<div class="bg-mode shadow rounded-3 overflow-hidden">
+					<div class="row g-0">
+						<!-- Vector Image -->
+						<div class="col-lg-6 d-flex align-items-center order-2 order-lg-1">
+							<div class="p-3 p-lg-5">
+								<img src="{{ asset('assets/images/element/signin.svg') }}" alt="">
 							</div>
-                    </form>
-					</div><!--//auth-form-container-->	
+							<!-- Divider -->
+							<div class="vr opacity-1 d-none d-lg-block"></div>
+						</div>
+		
+						<!-- Information -->
+						<div class="col-lg-6 order-1">
+							<div class="p-4 p-sm-7">
+								<!-- Logo -->
+								<a href="{{ route('home') }}" class="d-flex align-items-center mb-4">
+									<img class="h-50px mb-4" src="{{ asset('assets/images/logo-icon.svg') }}" alt="logo">
+								</a>
+								<!-- Title -->
+								<h1 class="mb-2 h3">Welcome back</h1>
+								@if (session('error'))
+									<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										{{ session('error') }}
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								@endif
+								<!-- Form START -->
+                                 <form method="POST" action="{{ route('login') }}" class="mt-4 text-start">
+                                    @csrf
+                                    <div class="email mb-3">
+                                        <label for="email" class="form-label">{{ __('Email Address') }}</label>
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter email" required autocomplete="email" autofocus>
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
 
-			    </div><!--//auth-body-->
-		    
-			    <footer class="app-auth-footer">
-				    <div class="container text-center py-3">
-				         <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-			        <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="app-link" href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers</small>
-				       
-				    </div>
-			    </footer><!--//app-auth-footer-->	
-		    </div><!--//flex-column-->   
-	    </div><!--//auth-main-col-->
-	    <div class="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-		    <div class="auth-background-holder">
-		    </div>
-		    <div class="auth-background-mask"></div>
-		    <div class="auth-background-overlay p-3 p-lg-5">
-			    <div class="d-flex flex-column align-content-end h-100">
-				    <div class="h-100"></div>
-				    <div class="overlay-content p-3 p-lg-4 rounded">
-					    <h5 class="mb-3 overlay-title">Explore Portal Admin Template</h5>
-					    <div>Portal is a free Bootstrap 5 admin dashboard template. You can download and view the template license <a href="https://themes.3rdwavemedia.com/bootstrap-templates/admin-dashboard/portal-free-bootstrap-admin-dashboard-template-for-developers/">here</a>.</div>
-				    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">{{ __('Password') }}</label>
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter password" required autocomplete="current-password">
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <!-- Remember me -->
+                                    <div class="mb-3 d-sm-flex justify-content-between">
+                                    <div>
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="remember">
+                                        {{ __('Remember Me') }}
+                                    </div>
+                                    <div>
+                                    @if (Route::has('password.request'))
+                                    <a href="{{ route('password.request') }}">
+                                        {{ __('Forgot Your Password?') }}
+                                    </a>
+                                    </div>
+                                    @endif
+                                    </div>
+                                    <div>
+                                    <button type="submit" class="btn btn-primary w-100 mb-0">
+                                            {{ __('Login') }}
+                                    </button>
+                                    </div>
+                                </form>
+								<!-- Form END -->
+							</div>		
+						</div>
+					</div>
 				</div>
-		    </div><!--//auth-background-overlay-->
-	    </div><!--//auth-background-col-->
-    
-    </div><!--//row-->
+			</div>
+		</div>
+	</div>
+</section>
+<!-- =======================
+Main Content END -->
 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+
+<!-- Back to top -->
+<div class="back-top"></div>
+
+<!-- Bootstrap JS -->
+<script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- ThemeFunctions -->
+<script src="{{ asset('assets/js/functions.js') }}"></script>
 
 </body>
-
-</html> 
-
-
+</html>

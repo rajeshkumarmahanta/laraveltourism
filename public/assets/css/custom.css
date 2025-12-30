@@ -1,0 +1,50 @@
+.bg-none{
+    background-color: transparent !important;
+}
+.tour-pagination .pagination {
+    margin: 0px;
+}
+.tour-pagination .pagination .page-item {
+     margin: 0px 5px;
+}
+.tour-pagination .pagination .page-link {
+    border: transparent;
+    border-radius: 0.5rem !important;
+    color: var(--bs-gray-700);
+    background-color: var(--bs-light);  
+}
+
+.tour-pagination .pagination .page-link:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+.tour-pagination .pagination .page-item.active .page-link {
+    z-index: 2;
+    color: #fff;
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.home-blog-image{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+.similar-tour-list a:hover h6 {
+    text-decoration: underline;
+}
+.similar-tour-list img {
+    object-fit: cover;
+    height: 67px;
+    width: 85px;
+}
+.tour-img{
+    height: 280px;
+    object-fit: cover;
+}
+.blog-img{
+    height: 280px;
+    object-fit: cover;
+}
