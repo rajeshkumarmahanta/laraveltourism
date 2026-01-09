@@ -30,39 +30,52 @@ Main Banner START -->
 				<div class="col-md-5 col-lg-4 col-xl-3 mb-3 mb-sm-0">
 					<div class="card shadow p-2 pb-0">
 						<!-- Offer badge -->
-						<div class="position-absolute top-0 start-0 mt-n3 ms-n3 z-index-9">
-							<img src="assets/images/element/05.svg" class="position-relative h-70px" alt="">
-							<span class="h5 text-white position-absolute top-50 start-50 translate-middle">40%</span>
-						</div>
+						
+							@if($mostPopularTour->discount_price)
+								<div class="position-absolute top-0 start-0 mt-n3 ms-n3 z-index-9">
+								<img src="assets/images/element/05.svg" class="position-relative h-70px" alt="">
+								@php
+									$discount = (($mostPopularTour->price - $mostPopularTour->discount_price) / $mostPopularTour->price) * 100;
+									$discountPercent = round($discount)
+
+								@endphp
+									<span class="h5 text-white position-absolute top-50 start-50 translate-middle">
+										{{ $discountPercent }}%
+									</span>
+								</div>
+							@endif
+
+						
 
 						<div class="rounded-3 overflow-hidden position-relative">
 							<!-- Image -->
-							<img src="assets/images/category/tour/05.jpg" class="card-img" alt="">
+							<img src="{{ asset($mostPopularTour->featured_image) }}" class="card-img" alt="{{ $mostPopularTour->title }}">
 							<!-- Overlay -->
 							<div class="bg-overlay bg-dark opacity-4"></div>
 
 							<!-- Hover element -->
 							<div class="card-img-overlay d-flex">
-								<h6 class="text-white fw-normal mt-auto mb-0">5 Days / 4 Nights</h6>
+								<h6 class="text-white fw-normal mt-auto mb-0">{{ $mostPopularTour->duration }}</h6>
 							</div>
 						</div>
 						<!-- Card body -->
 						<div class="card-body px-2">
 							<!-- Badge and Rating -->
 							<div class="d-flex justify-content-between align-items-center mb-2">
-								<a href="#" class="badge bg-primary bg-opacity-10 text-primary">Adventure</a>
-								<!-- Rating -->
-								<h6 class="fw-light m-0"><i class="fa-solid fa-star text-warning me-2"></i>4.5</h6>
+								<a href="{{ route('tour.category',$mostPopularTour->category->slug) }}" class="badge bg-primary bg-opacity-10 text-primary">{{ $mostPopularTour->category->name }}</a>
 							</div>
 
 							<!-- Title -->
-							<h6 class="card-title"><a href="#">Maldives Sightseeing & Adventure Tour</a></h6>
+							<h6 class="card-title"><a href="{{ route('tour.details',$mostPopularTour->slug) }}">{{ $mostPopularTour->title }}</a></h6>
 
 							<!-- Badge and Price -->
 							<div class="d-flex justify-content-between align-items-center mb-0">
-								<!-- Price -->
-								<h6 class="text-success mb-0">$385 <span class="fw-light">/person</span></h6>
-								<span class="text-decoration-line-through mb-0 text-reset">$682</span>
+								@if($mostPopularTour->discount_price && $mostPopularTour->discount_price < $mostPopularTour->price)
+									<h5 class="fw-normal text-success mb-0">{{ $currency }}{{ number_format($mostPopularTour->discount_price, 2) }}</h5>
+									<span class="text-decoration-line-through text-muted">{{ $currency }}{{ number_format($mostPopularTour->price, 2) }}</span>
+								@else
+									<h5 class="fw-normal text-success mb-0">{{ $currency }}{{ number_format($mostPopularTour->price, 2) }}</h5>
+								@endif
 							</div>
 						</div>
 					</div>

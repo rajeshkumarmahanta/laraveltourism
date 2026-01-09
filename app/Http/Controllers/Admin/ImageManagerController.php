@@ -25,7 +25,7 @@ class ImageManagerController extends Controller
 
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/';
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {
@@ -51,7 +51,7 @@ class ImageManagerController extends Controller
 
             // Delete old image if exists
             if (!empty($image->image)) {
-                $oldImagePath = public_path($image->image);
+                $oldImagePath = $_SERVER['DOCUMENT_ROOT'].$image->image;
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -59,11 +59,14 @@ class ImageManagerController extends Controller
 
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/';
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {
-                mkdir($imageDir, 0777, true);
+                mkdir($imageDir,0777,true);
+            }
+            if (file_exists($image->image)) {
+                unlink($$image->image);
             }
 
             // Move image
@@ -83,6 +86,9 @@ class ImageManagerController extends Controller
     public function delete($id)
     {
         $image = ImageManager::findOrFail($id);
+          if (file_exists($image->image)) {
+                unlink($$image->image);
+            }
         $image->delete();
         return redirect()->back()->with('success', 'Image delete successfully.');
     }

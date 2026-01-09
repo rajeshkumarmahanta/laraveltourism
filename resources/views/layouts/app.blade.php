@@ -276,12 +276,11 @@ Footer START -->
       <div class="row">
          <div class="container">
             <div class="d-lg-flex justify-content-between align-items-center py-3 text-center text-lg-start">
-               <div class="text-body-secondary text-primary-hover"> Copyrights ©2025 Booking. Build by <a href="https://stackbros.in/" target="_blank" class="text-body-secondary">StackBros</a>. </div>
+               <div class="text-body-secondary text-primary-hover"> Copyrights ©{{ date('Y') }} {{ $websiteSettings->site_name }}. Build by <a href="https://rajeshkumar.fun/" target="_blank" class="text-body-secondary">Rajesh</a>. </div>
                <div class="nav mt-2 mt-lg-0 nav">
                   <ul class="list-inline text-primary-hover mx-auto mb-0">
-                     <li class="list-inline-item me-0"><a href="#" role="button" class="text-body-secondary py-1 nav-link" tabindex="0">Privacy policy</a></li>
-                     <li class="list-inline-item me-0"><a href="#" role="button" class="text-body-secondary py-1 nav-link" tabindex="0">Terms and conditions</a></li>
-                     <li class="list-inline-item me-0"><a href="#" role="button" class="text-body-secondary py-1 pe-0 nav-link" tabindex="0">Refund policy</a></li>
+                     <li class="list-inline-item me-0"><a href="/privacy-policy" role="button" class="text-body-secondary py-1 nav-link" tabindex="0">Privacy policy</a></li>
+                     <li class="list-inline-item me-0"><a href="/terms-of-service" role="button" class="text-body-secondary py-1 nav-link" tabindex="0">Terms and conditions</a></li>
                   </ul>
                </div>
             </div>

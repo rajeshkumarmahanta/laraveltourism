@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageManagerController;
 use App\Http\Controllers\Admin\InquiryController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Admin\WebsiteSettings;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PdfController;
@@ -22,12 +24,13 @@ use App\Http\Controllers\ToursController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class,'index'])->name('home');
-Route::get('/page', [PageController::class,'page'])->name('page');
+Route::get('/{slug}', [PageController::class,'page'])->name('page');
 Route::get('/tours', [ToursController::class,'tours'])->name('tours');
 Route::get('/blogs', [BlogsController::class,'blogs'])->name('blogs');
 Route::post('/newsletter/store', [NewsletterController::class, 'store'])->name('newsletter.store');
 Route::post('/inquiry/store', [InquiryController::class, 'store'])->name('inquiry.store');
 Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/generate-pdf/{id}', [PdfController::class, 'savePDF'])->name('generatePdf');
 Route::prefix('tour')->group( function () {
@@ -119,6 +122,10 @@ Route::prefix('admin')->group( function () {
         Route::post('/update/{id}',[AdminBookingController::class,'update'])->name('admin.bookings.update');
         Route::get('/view/{id}',[AdminBookingController::class,'view'])->name('admin.bookings.view');
         Route::get('/tour/{id}',[AdminBookingController::class,'tourBookings'])->name('admin.bookings.tourBookings');
+    });
+    Route::group(['prefix'=>'contact'], function () {
+        Route::get('/index', [AdminContactController::class, 'index'])->name('admin.contact.index');
+        Route::get('/delete/{id}',[AdminContactController::class,'delete'])->name('admin.contact.delete');
     });
 });
 Route::group(['prefix' => 'api'], function () {

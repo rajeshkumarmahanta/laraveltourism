@@ -26,6 +26,9 @@ class PageController extends Controller
     public function delete($id)
     {
         $page = Pages::findOrFail($id);
+        if (file_exists($page->image)) {
+            unlink($page->image);
+        }
         $page->delete();
          return redirect()->back()->with('success', 'Page delete successfully.');
     }
@@ -42,7 +45,7 @@ class PageController extends Controller
 
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/page');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/page';;
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {
@@ -77,11 +80,14 @@ class PageController extends Controller
 
         $imageFile = $request->file('image');
         $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-        $imageDir  = public_path('images/page');
+        $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/page';;
 
         // Create directory if not exists
         if (!file_exists($imageDir)) {
             mkdir($imageDir, 0777, true);
+        }
+        if (file_exists($page->image)) {
+            unlink($page->image);
         }
 
         // Move image

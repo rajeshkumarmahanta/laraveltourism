@@ -39,7 +39,7 @@ class TourController extends Controller
 
             $imageFile = $request->file('featured_image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/tours');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/tours';
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {
@@ -78,19 +78,14 @@ class TourController extends Controller
         $imagePath = null;
 
         /* ============== FEATURED IMAGE ============== */
-        if ($request->hasFile('featured_image')) {
-
-            // Delete old image if exists
-            if (!empty($tour->featured_image)) {
-                $oldImagePath = public_path($tour->featured_image);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
+        if ($request->hasFile('featured_image')){
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$tour->featured_image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'].'/'.$tour->featured_image);
             }
 
             $imageFile = $request->file('featured_image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/tours');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/tours';
 
             // Create folder if not exists
             if (!file_exists($imageDir)) {
@@ -128,8 +123,12 @@ class TourController extends Controller
     }
       public function delete($id)
     {
-        $category = Tour::findOrFail($id);
-        $category->delete();
+        $tour = Tour::findOrFail($id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$tour->featured_image)){
+            unlink($_SERVER['DOCUMENT_ROOT'].'/'.$tour->featured_image);
+        }
+        $tour->delete();
+
         return redirect()->back()->with('success', 'Tour delete successfully.');
     }
     public function toggleStatus(Request $request)

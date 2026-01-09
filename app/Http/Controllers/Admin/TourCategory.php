@@ -32,7 +32,7 @@ class TourCategory extends Controller
 
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/tour_category');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/tour_category';;
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {
@@ -59,20 +59,18 @@ class TourCategory extends Controller
        $category = ModelsTourCategory::findOrFail($id);
        $imagePath = null;
 
-/* ============== CATEGORY IMAGE ============== */
-if ($request->hasFile('image')) {
+    /* ============== CATEGORY IMAGE ============== */
+    if ($request->hasFile('image')) {
 
-            // Delete old image if exists
-            if (!empty($category->image)) {
-                $oldImagePath = public_path($category->image);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
+    
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$category->image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'].'/'.$category->image);
             }
+            
 
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/tour_category');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/tour_category';;
 
             // Create folder if not exists
             if (!file_exists($imageDir)) {
@@ -104,8 +102,11 @@ if ($request->hasFile('image')) {
     
     public function delete($id)
     {
-       $category = ModelsTourCategory::findOrFail($id);
-       $category->delete();
+        $category = ModelsTourCategory::findOrFail($id);
+        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$category->image)) {
+                unlink($_SERVER['DOCUMENT_ROOT'].'/'.$category->image);
+            }
+        $category->delete();
         return redirect()->back()->with('success', 'Tour category delete successfully.');
     }
     

@@ -30,8 +30,11 @@ class BlogController extends Controller
     }
      public function delete($id)
     {
-        $page = Blog::findOrFail($id);
-        $page->delete();
+        $blog = Blog::findOrFail($id);
+        if (file_exists($blog->image)) {
+            unlink($blog->image);
+        }
+        $blog->delete();
         return redirect()->back()->with('success', 'Blog delete successfully.');
     }
     public function store(Request $request)
@@ -42,7 +45,7 @@ class BlogController extends Controller
 
         $imageFile = $request->file('image');
         $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-        $imageDir  = public_path('images/blog');
+        $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/blog';;
 
         // Create directory if not exists
         if (!file_exists($imageDir)) {
@@ -73,13 +76,16 @@ class BlogController extends Controller
     }
     public function update(Request $request,$id)
     {
+        $blog = Blog::findOrFail($id);
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-
+             if (file_exists($blog->image)) {
+                unlink($blog->image);
+            }
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/blog');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/blog';;
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {
@@ -96,7 +102,7 @@ class BlogController extends Controller
             // Keep old image
             $imagePath = $request->old_image;
         }
-        $blog = Blog::findOrFail($id);
+        
         $blog->title = $request->title ?? '';
         $blog->slug = $request->slug;
         $blog->content = $request->description;

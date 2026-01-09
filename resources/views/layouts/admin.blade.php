@@ -191,6 +191,11 @@
 						request()->routeIs('admin.bookings.index')
 						 ? 'active' : '' }}">Bookings</a>
 					</li>
+					<li class="nav-item">
+						<a href="{{ route('admin.contact.index') }}" class="nav-link {{ 
+						request()->routeIs('admin.contact.index')
+						 ? 'active' : '' }}">Contact Quotes</a>
+					</li>
 
 				</ul>
 				<!-- Sidebar menu end -->
@@ -460,57 +465,7 @@ function customConfirmDelete(event) {
     return false; // prevent default action for now
 }
 </script>
-<script>
-    var options = {
-        chart: {
-            type: 'line',
-            height: 350,
-            toolbar: { show: true }
-        },
-        stroke: {
-            curve: 'smooth',
-            width: 3
-        },
-        series: [{
-            name: 'Bookings',
-            data: {!! json_encode($bookingChart) !!}   // FIXED & SAFE
-        }],
-        xaxis: {
-            categories: [
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-            ]
-        },
-        yaxis: {
-            labels: {
-                formatter: val => parseInt(val)
-            }
-        },
-        colors: ['#0d6efd'], // Bootstrap primary
-        markers: {
-            size: 4
-        },
-        tooltip: {
-            theme: 'dark',
-            y: {
-                formatter: function(value) {
-                    return "Bookings: " + value;
-                }
-            }
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 0.4,
-                opacityFrom: 0.7,
-                opacityTo: 0.2,
-            }
-        }
-    };
 
-    var chart = new ApexCharts(document.querySelector("#bookingChart"), options);
-    chart.render();
-</script>
 
 </body>
 </html>

@@ -81,8 +81,8 @@
 				<!-- Title -->
 				<div class="col-12">
 					<div class="d-flex justify-content-between">
-						<h4 class="mb-0">Popular Hotels</h4>
-						<a href="#" class="btn btn-primary-soft mb-0">View All</a>
+						<h4 class="mb-0">Popular Tours</h4>
+						<a href="{{ route('admin.tour.index') }}" class="btn btn-primary-soft mb-0">View All</a>
 					</div>	
 				</div>
 

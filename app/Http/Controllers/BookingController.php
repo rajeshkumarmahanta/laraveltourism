@@ -14,7 +14,7 @@ class BookingController extends Controller
         if ($request->hasFile('image')) {
             $imageFile = $request->file('image');
             $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/id_proof');
+            $imageDir  = $_SERVER['DOCUMENT_ROOT'].'/images/id_proof';
 
             // Create directory if not exists
             if (!file_exists($imageDir)) {

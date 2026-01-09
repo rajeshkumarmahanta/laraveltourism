@@ -20,4 +20,9 @@ class Booking extends Model
         'id_image',
         'additional_message',
     ];
+    public function tour()
+        {
+            return $this->belongsTo(Tour::class, 'tour_id');
+        }
+
 }

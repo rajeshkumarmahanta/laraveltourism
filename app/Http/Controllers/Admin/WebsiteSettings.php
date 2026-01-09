@@ -33,18 +33,14 @@ class WebsiteSettings extends Controller
 
         /* ================= LOGO ================= */
         if ($request->hasFile('logo')) {
-
-        // Delete old logo if exists
-        if (!empty($settings->logo)) {
-            $oldLogoPath = public_path($settings->logo);
-            if (file_exists($oldLogoPath)) {
-                unlink($oldLogoPath);
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$settings->logo)) {
+                unlink($_SERVER['DOCUMENT_ROOT'].'/'.$settings->logo);
             }
-        }
+        
 
         $logoFile = $request->file('logo');
         $logoName = Str::random(20) . '.' . $logoFile->getClientOriginalExtension();
-        $logoPath = public_path('images/logo');
+        $logoPath = $_SERVER['DOCUMENT_ROOT'].'/images/logo';
 
         // Create folder if not exists
         if (!file_exists($logoPath)) {
@@ -64,29 +60,25 @@ class WebsiteSettings extends Controller
 
         /* ================= FAVICON ================= */
         if ($request->hasFile('favicon')) {
-
-        // Delete old favicon if exists
-        if (!empty($settings->favicon)) {
-            $oldFaviconPath = public_path($settings->favicon);
-            if (file_exists($oldFaviconPath)) {
-                unlink($oldFaviconPath);
+            if (file_exists($_SERVER['DOCUMENT_ROOT'].'/'. $settings->favicon)) {
+                unlink($_SERVER['DOCUMENT_ROOT'].'/'. $settings->favicon);
             }
-        }
+    
 
         $faviconFile = $request->file('favicon');
         $faviconName = Str::random(20) . '.' . $faviconFile->getClientOriginalExtension();
-        $faviconPath = public_path('images/favicon');
+        $faviconPath = $_SERVER['DOCUMENT_ROOT'].'/images/favicon';
 
         // Create folder if not exists
         if (!file_exists($faviconPath)) {
             mkdir($faviconPath, 0777, true);
         }
 
-            // Move file
-            $faviconFile->move($faviconPath, $faviconName);
+        // Move file
+        $faviconFile->move($faviconPath, $faviconName);
 
-            // Save relative path
-            $favicon = 'images/favicon/' . $faviconName;
+        // Save relative path
+        $favicon = 'images/favicon/' . $faviconName;
 
         } else {
             // Keep old favicon
@@ -135,40 +127,6 @@ class WebsiteSettings extends Controller
     return redirect()->back()->with('success', 'Password changed successfully.');
     }
 
-public function store(Request $request){
-        $imagePath = null;
 
-        if ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-            $imageName = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
-            $imageDir  = public_path('images/id_proof');
-
-            // Create directory if not exists
-            if (!file_exists($imageDir)) {
-                mkdir($imageDir, 0777, true);
-            }
-
-            // Move image
-            $imageFile->move($imageDir, $imageName);
-
-            // Save relative path (DB)
-            $imagePath = 'images/page/' . $imageName;
-        }
-        // Create a new booking record
-        Booking::create([
-            'tour_id' => $request->tour_id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'travel_date' => $request->travel_date,
-            'travenlers_no' => $request->travenlers_no,
-            'pickup_address' => $request->pickup_address,
-            'id_type' => $request->id_type,
-            'id_image' => $imagePath,
-            'additional_message' => $request->additional_message,
-        ]);
-
-        return redirect()->back()->with('success', 'Booking submitted successfully!');
-    }
 
 }

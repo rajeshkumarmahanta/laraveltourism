@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Booking;
 use App\Models\Pages;
 use App\Models\Tour;
 use App\Models\TourCategory;
@@ -30,8 +31,11 @@ class HomeController extends Controller
                         ->get();
         $blogs = Blog::where('status', 1)
                         ->get();
+        $mostPopularTour = Tour::withCount('bookings')
+                        ->orderBy('bookings_count', 'DESC')
+                        ->first();
         $tour_categories = TourCategory::withCount('tours')->take(8)->get();
 
-        return view('home',compact('page','featured_tour','tour_categories','blogs'));
+        return view('home',compact('page','featured_tour','tour_categories','blogs','mostPopularTour'));
     }
 }

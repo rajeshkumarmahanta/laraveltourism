@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $totalTours = Tour::count();
         $monthlyEarnings = Booking::whereMonth('created_at', now()->month)
                             ->whereYear('created_at', now()->year)
-                            ->sum('amount');
+                            ->sum('price');
 
         // Get monthly bookings grouped by month
         $monthlyBookings = Booking::select(
